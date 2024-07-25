@@ -8,7 +8,6 @@ namespace LycansUpPlayer.Patchs
 {
     public class GameSettingsMenuPatch
     {
-        private static bool translationsRegistered = false;
 
         public static void Hook()
         {

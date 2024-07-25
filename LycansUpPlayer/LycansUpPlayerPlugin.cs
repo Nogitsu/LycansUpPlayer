@@ -1,8 +1,6 @@
 ﻿using BepInEx;
-using UnityEngine;
 using LycansUpPlayer.Utils;
 using LycansUpPlayer.Patchs;
-
 namespace LycansUpPlayer
 {
 
@@ -17,6 +15,9 @@ namespace LycansUpPlayer
         public const string PLUGIN_FOLDER = "LycansUpPlayer";
         public const string PLUGIN_VERSION = "1.0.0";
 
+        private int maxPlayers = 2;
+        
+
 
         private void Awake()
         {
@@ -24,11 +25,11 @@ namespace LycansUpPlayer
             Log.Info($"{PLUGIN_NAME} v{PLUGIN_VERSION} loaded");
             settings = new Settings(Config);
             GameSettingsMenuPatch.Hook();
+            LycansUpPlayerUI.Hook();
         }
 
         private void Update()
         {
         }
-
     }
 }

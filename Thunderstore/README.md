@@ -1,3 +1,3 @@
-# LycansModTemplate
+# LycansUpPlayer
 
-Ma description de mod
+Ce mod permet de créer des parties multijoueurs à plus de 10 joueurs.
