@@ -1,7 +1,6 @@
 ﻿using BepInEx;
-using LycansUpPlayer.Utils;
+// using LycansUpPlayer.Utils;
 using LycansUpPlayer.Patchs;
-using UnityEngine;
 using HarmonyLib;
 namespace LycansUpPlayer
 {
@@ -10,7 +9,9 @@ namespace LycansUpPlayer
     [BepInProcess("Lycans.exe")]
     public class LycansUpPlayerPlugin : BaseUnityPlugin
     {
-        public static Settings settings;
+        public static int MAX_PLAYERS { get; } = 2;
+
+        // public static Settings settings;
         public const string PLUGIN_GUID = $"nm-qm.lycans-up-player";
         public const string PLUGIN_AUTHOR = "NM & QM";
         public const string PLUGIN_NAME = "LycansUpPlayer";
@@ -23,12 +24,13 @@ namespace LycansUpPlayer
         {
             Log.Init(Logger);
             Log.Info($"{PLUGIN_NAME} v{PLUGIN_VERSION} loaded");
-            settings = new Settings(Config);
+            // settings = new Settings(Config);
            // GameSettingsMenuPatch.Hook();
             LycansUpPlayerUI.Hook();
+            Patchs.PlayerRegistry.Hook();
 
-            var harmony = new Harmony(PLUGIN_GUID);
-            harmony.PatchAll();
+            // var harmony = new Harmony(PLUGIN_GUID);
+            // harmony.PatchAll();
         }
 
         private void Update()

@@ -13,7 +13,6 @@ namespace LycansUpPlayer
         private const string SETTINGS_SERVER_REGION = "SETTINGS_SERVER_REGION";
         private const string MAIN_MENU_PATH = "GameUI/Canvas/MainMenu/LayoutGroup/Body/LayoutGroup/ActionsContainer/LayoutGroup/";
         private const string PLAY_MENU_PATH = "GameUI/Canvas/PlayMenu/LayoutGroup/Body/TaskPanel/Holder/LayoutGroup/";
-        private const int MAX_PLAYERS = 15;
 
         public static void Hook()
         {
@@ -27,7 +26,7 @@ namespace LycansUpPlayer
             Log.Info("OnShowMainMenu called");
             orig(self, active);
 
-            Log.Info($"Max players set to {MAX_PLAYERS}");
+            Log.Info($"Max players set to {LycansUpPlayerPlugin.MAX_PLAYERS}");
 
             GameObject hostObj = GameObject.Find(MAIN_MENU_PATH + "HostButton");
             GameObject joinObj = GameObject.Find(MAIN_MENU_PATH + "JoinButton");
@@ -63,13 +62,13 @@ namespace LycansUpPlayer
                 string region = PlayerPrefs.HasKey(SETTINGS_SERVER_REGION) ? PlayerPrefs.GetString(SETTINGS_SERVER_REGION) : REGION_DEFAULT;
 
                 Log.Info($"Calling StartSession with sessionName: {sessionName}, region: {region}");
-                instance.StartSession(GameMode.Host, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), MAX_PLAYERS, "Default", true);
+                instance.StartSession(GameMode.Host, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), LycansUpPlayerPlugin.MAX_PLAYERS, "Default", true);
             });
 
             On.GameUI.UpdatePlayerCount += (On.GameUI.orig_UpdatePlayerCount orig, global::GameUI self, int count) =>
             {
                 Log.Info($"UpdatePlayerCount called with count: {count}");
-                self.playerCount.text = $"{count}/{MAX_PLAYERS}";
+                self.playerCount.text = $"{count}/{LycansUpPlayerPlugin.MAX_PLAYERS}";
             };
         }
 
@@ -117,9 +116,9 @@ namespace LycansUpPlayer
                 Log.Info("NetworkRunnerHandler instance found");
 
                 string region = PlayerPrefs.HasKey(SETTINGS_SERVER_REGION) ? PlayerPrefs.GetString(SETTINGS_SERVER_REGION) : REGION_DEFAULT;
-                Log.Info($"Region: {region}, Max Players: {MAX_PLAYERS}");
+                Log.Info($"Region: {region}, Max Players: {LycansUpPlayerPlugin.MAX_PLAYERS}");
 
-                instance.StartSession(GameMode.Client, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), MAX_PLAYERS, "Default", true);
+                instance.StartSession(GameMode.Client, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), LycansUpPlayerPlugin.MAX_PLAYERS, "Default", true);
             });
         }
     }

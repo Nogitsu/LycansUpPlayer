@@ -43,18 +43,18 @@ namespace LycansUpPlayer.Patchs
             orig(self);
             Log.Info("GameManager_Start");
 
-            var gameSettingsMenu = LycansUpPlayerPlugin.settings;
-            var playerCount = gameSettingsMenu.getPlayerCount();
+            // var gameSettingsMenu = LycansUpPlayerPlugin.settings;
+            var playerCount = LycansUpPlayerPlugin.MAX_PLAYERS; //gameSettingsMenu.getPlayerCount();
             AddSection(self.gameUI, "LUP_LABEL");
 
             AddSlider(self.gameUI, "LUP_PLAYER_COUNT",
                 (value) =>
                 {
-                    gameSettingsMenu.setPlayerCount((int)value);
+                    // gameSettingsMenu.setPlayerCount((int)value);
                     Log.Info($"Player count set to {value}");
                 },
                 playerCount,
-                gameSettingsMenu.getDefaultPlayerCount()
+                LycansUpPlayerPlugin.MAX_PLAYERS// gameSettingsMenu.getDefaultPlayerCount()
             );
 
             MakeSettingsMenuScrollable(self.gameUI);
