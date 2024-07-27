@@ -2,6 +2,7 @@
 using LycansUpPlayer.Utils;
 using LycansUpPlayer.Patchs;
 using UnityEngine;
+using HarmonyLib;
 namespace LycansUpPlayer
 {
 
@@ -25,6 +26,9 @@ namespace LycansUpPlayer
             settings = new Settings(Config);
            // GameSettingsMenuPatch.Hook();
             LycansUpPlayerUI.Hook();
+
+            var harmony = new Harmony(PLUGIN_GUID);
+            harmony.PatchAll();
         }
 
         private void Update()
