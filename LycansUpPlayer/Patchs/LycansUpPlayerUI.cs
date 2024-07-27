@@ -12,7 +12,7 @@ namespace LycansUpPlayer.Patchs
         private const string SETTINGS_SERVER_REGION = "SETTINGS_SERVER_REGION";
         private const string MAIN_MENU_PATH = "GameUI/Canvas/MainMenu/LayoutGroup/Body/LayoutGroup/ActionsContainer/LayoutGroup/";
         private const string PLAY_MENU_PATH = "GameUI/Canvas/PlayMenu/LayoutGroup/Body/TaskPanel/Holder/LayoutGroup/";
-
+        private const int MAX_PLAYERS = 15;
         public static void Hook()
         {
             On.GameUI.ShowPlayMenu += OnShowPlayMenu;
@@ -24,7 +24,7 @@ namespace LycansUpPlayer.Patchs
             Log.Info("OnShowMainMenu");
             orig(self, active);
 
-            int maxPlayers = 20;
+            Log.Info($"Max players set to {MAX_PLAYERS}");
 
             GameObject hostObj = GameObject.Find(MAIN_MENU_PATH + "HostButton");
             GameObject joinObj = GameObject.Find(MAIN_MENU_PATH + "JoinButton");
@@ -55,12 +55,12 @@ namespace LycansUpPlayer.Patchs
                 string sessionName = RoomCode.Create(5);
                 string region = PlayerPrefs.HasKey(SETTINGS_SERVER_REGION) ? PlayerPrefs.GetString(SETTINGS_SERVER_REGION) : REGION_DEFAULT;
 
-                instance.StartSession(GameMode.Host, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), maxPlayers, "Default", true);
+                instance.StartSession(GameMode.Host, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), MAX_PLAYERS, "Default", true);
             });
 
             On.GameUI.UpdatePlayerCount += (On.GameUI.orig_UpdatePlayerCount orig, global::GameUI self, int count) =>
             {
-                self.playerCount.text = $"{count}/{maxPlayers}";
+                self.playerCount.text = $"{count}/{MAX_PLAYERS}";
             };
         }
 
@@ -81,7 +81,7 @@ namespace LycansUpPlayer.Patchs
             codeJoinBtn.onClick.RemoveAllListeners();
             codeJoinBtn.onClick.AddListener(() =>
             {
-                TMP_InputField codeInput = GameObject.Find(MAIN_MENU_PATH + "CodeInput").GetComponent<TMP_InputField>();
+                TMP_InputField codeInput = GameObject.Find(PLAY_MENU_PATH + "CodeInput").GetComponent<TMP_InputField>();
                 if (codeInput == null)
                 {
                     Log.Error("CodeInput field not found");
@@ -102,8 +102,10 @@ namespace LycansUpPlayer.Patchs
                 }
 
                 string region = PlayerPrefs.HasKey(SETTINGS_SERVER_REGION) ? PlayerPrefs.GetString(SETTINGS_SERVER_REGION) : REGION_DEFAULT;
+                // Log the region and max players for debugging
+                Log.Info($"Region: {region}, Max Players: {MAX_PLAYERS}");
 
-                instance.StartSession(GameMode.Client, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), 1, "Default", true);
+                instance.StartSession(GameMode.Client, sessionName, SceneManager.GetActiveScene().buildIndex, region, SteamAuth.Instance.InitToken(), MAX_PLAYERS, "Default", true);
             });
         }
     }
